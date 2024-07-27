@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(100deg, #f0f0f0, #d0d0ff);
+        }
+
+        .book-card {
+            margin-bottom: 20px;
+        }
+
+        .book-card img {
+            height: auto;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: linear-gradient(135deg, #f8f8f8, #e0e0ff);
+            padding: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary py-3">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-primary fw-bold" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-primary fw-bold" href="#">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-primary fw-bold" href="#">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-primary fw-bold" href="#">Shop</a>
+                    </li>
+                </ul>
+                <button type="button" class="btn btn-primary fw-bold" data-bs-toggle="modal"
+                    data-bs-target="#addBookModal">Add
+                    Book</button>
+            </div>
+        </div>
+    </nav>
+    <div class="container my-4">
+        <div class="row">
+            <% data.map((val)=> {
+                const { ImageURL ,Name, Description, Price, Discount } = val;
+                %>
+                <div class="col-6">
+                    <div class="card book-card">
+                        <div class="row">
+                            <div class="col-4">
+                                <img src="<%= ImageURL %>" height="10vh" alt="<%= Name %> Image" class="card-img-top">
+                            </div>
+                            <div class="col-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <%= Name %>
+                                    </h5>
+                                    <p class="card-text"><strong class="me-2">Description:</strong>
+                                        <%= Description %>
+                                    </p>
+                                    <p class="card-text"><strong class="me-2">Price:</strong>
+                                        <%= Price %>
+                                    </p>
+                                    <p class="card-text"><strong class="me-2">Discount:</strong>
+                                        <%= Discount %>
+                                    </p>
+                                    <a href="/DeleteData?id=<%= val._id %>" class="btn btn-danger fw-bold">Delete</a>
+                                    <a href="#" class="btn btn-warning fw-bold" data-bs-toggle="modal"
+                                        data-bs-target="#updateModal<%= val._id %>">Update</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="updateModal<%= val._id %>" tabindex="-1"
+                    aria-labelledby="updateModalLabel<%= val._id %>" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateModalLabel<%= val._id %>">Update Book Data</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/insertData" method="post">
+                                    <input type="hidden" name="id" value="<%= val._id %>">
+                                    <div class="mb-3">
+                                        <label for="Name" class="fw-bold mb-3">ImageURL:</label>
+                                        <input type="text" class="form-control mb-3" id="ImageURL" name="ImageURL"
+                                            value="<%= val.ImageURL %>" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Name" class="fw-bold mb-3">Name:</label>
+                                        <input type="text" class="form-control mb-3" id="Name" name="Name"
+                                            value="<%= val.Name %>" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Description" class="fw-bold mb-3">Description :</label>
+                                        <input type="text" class="form-control mb-3" id="Description" name="Description"
+                                            value="<%= val.Description %>" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Password" class="fw-bold mb-3">Price:</label>
+                                        <input type="number" class="form-control mb-3" id="Price" name="Price"
+                                            value="<%= val.Price %>" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Discount" class="fw-bold mb-3">Discount :</label>
+                                        <input type="text" class="form-control mb-3" id="Discount" name="Discount"
+                                            value="<%= val.Discount %>" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary fw-bold mt-3">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% }); %>
+        </div>
+    </div>
+    </div>
+    <div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addBookModalLabel">Add New Book</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/insertData" method="post">
+                        <div class="form-group">
+                            <label class="fw-bold mb-3" for="ImageURL">ImageURL:</label>
+                            <input type="text" class="form-control fw-bold mb-3" id="ImageURL" name="ImageURL"
+                                placeholder="Enter book image URL" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="fw-bold mb-3" for="Name">Name:</label>
+                            <input type="text" class="form-control fw-bold mb-3" id="Name" name="Name"
+                                placeholder="Enter book name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="fw-bold mb-3" for="Description">Description:</label>
+                            <textarea class="form-control fw-bold mb-3" id="Description" rows="3" name="Description"
+                                placeholder="Enter book description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="fw-bold mb-3" for="Price">Price:</label>
+                            <input type="number" class="form-control fw-bold mb-3" id="Price" name="Price"
+                                placeholder="Enter price" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="fw-bold mb-3" for="Discount">Discount:</label>
+                            <input type="number" class="form-control fw-bold mb-3" id="Discount" name="Discount"
+                                placeholder="Enter discount percentage" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary fw-bold mt-3">Add Book</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
