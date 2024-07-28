@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-4">
+                <h2 class="fw-bold mb-5">User Registration Form</h2>
+                <form action="/insertData" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="name" class="form-label fw-bold">Name :</label>
+                        <input type="text" class="form-control text-secondary fw-bold mt-2" id="Name" name="Name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label fw-bold">Email :</label>
+                        <input type="email" class="form-control text-secondary fw-bold mt-2" id="Email" name="Email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label fw-bold">Password :</label>
+                        <input type="password" class="form-control text-secondary fw-bold mt-2" id="Password"
+                            name="Password">
+                    </div>
+                    <div class="mb-3">
+                        <label for="mobile" class="form-label fw-bold">Mobile :</label>
+                        <input type="text" class="form-control text-secondary fw-bold mt-2" id="Mobile" name="Mobile">
+                    </div>
+                    <div class="mb-3">
+                        <label for="city" class="form-label fw-bold">City :</label>
+                        <input type="text" class="form-control text-secondary fw-bold mt-2" id="City" name="City">
+                    </div>
+                    <div class="mb-3">
+                        <label for="Image">Image:</label>
+                        <input type="file" name="image">
+                    </div>
+                    <button type="submit" class="btn btn-primary fw-bold mt-2">Submit</button>
+                </form>
+            </div>
+            <div class="col-8">
+                <h2 class="fw-bold mb-5">User Data</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>Mobile</th>
+                            <th>City</th>
+                            <th>Image</th>
+                            <th class="ps-4">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% data.map(val=> {
+                            let { Name, Email, Password, Mobile, City , Image } = val;
+                            %>
+                            <tr>
+                                <td> <%= Name %> </td>
+                                <td> <%= Email %> </td>
+                                <td> <%= Password %> </td>
+                                <td> <%= Mobile %> </td>
+                                <td> <%= City %> </td>
+                                <td>
+                                    <img src="<%= Image %>" alt="Image" width="50" height="50">
+                                </td>
+                                <td>
+                                    <a href="#" class="btn btn-warning fw-bold" data-bs-toggle="modal"
+                                        data-bs-target="#updateModal<%= val._id %>">Update</a>
+                                    <a href="/DeleteData?id=<%= val._id %>" class="btn btn-danger fw-bold">Delete</a>
+                                </td>
+                            </tr>
+                            <div class="modal fade" id="updateModal<%= val._id %>" tabindex="-1"
+                                aria-labelledby="updateModalLabel<%= val._id %>" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="updateModalLabel<%= val._id %>">Update User</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="/insertData" method="post" enctype="multipart/form-data">
+                                                <input type="hidden" name="id" value="<%= val._id %>">
+                                                <div class="mb-3">
+                                                    <label for="Name" class="fw-bold mb-3">Name:</label>
+                                                    <input type="text" class="form-control mb-3" id="Name" name="Name"
+                                                        value="<%= val.Name %>" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="Email" class="fw-bold mb-3">Email:</label>
+                                                    <input type="email" class="form-control mb-3" id="Email"
+                                                        name="Email" value="<%= val.Email %>" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="Password" class="fw-bold mb-3">Password:</label>
+                                                    <input type="password" class="form-control mb-3" id="Password"
+                                                        name="Password" value="<%= val.Password %>" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="Mobile" class="fw-bold mb-3">Mobile:</label>
+                                                    <input type="text" class="form-control mb-3" id="Mobile"
+                                                        name="Mobile" value="<%= val.Mobile %>" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="City" class="fw-bold mb-3">City:</label>
+                                                    <input type="text" class="form-control mb-3" id="City" name="City"
+                                                        value="<%= val.City %>" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="image" class="fw-bold mb-3">image:</label>
+                                                    <input type="file" class="form-control mb-3" id="image" name="image"
+                                                        required>
+                                                </div>
+                                                <button type="submit"
+                                                    class="btn btn-primary fw-bold mt-3">Update</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
