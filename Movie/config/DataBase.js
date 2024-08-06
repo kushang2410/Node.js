@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const db = async () => {
-    await mongoose.connect("mongodb+srv://kushangtanawala:12345@cluster0.uhmgxxp.mongodb.net/User")
+    await mongoose.connect("Enter Your DataBase Link")
     console.log("database connected");
 }
 
